@@ -17,13 +17,15 @@ public class Reminds {
     public DeleteRemind deleteRemind;
 
     public Reminds(String remindText, long remindTime) {
-        int remindPos = Interface.reminders.size();
+        int remindRectHeight = 20;
+
+        int remindRectY = Interface.reminderBackground.y;
+        if (Interface.reminders.size() > 0) remindRectY = Interface.reminders.get(Interface.reminders.size() - 1).remindRect.y + remindRectHeight;
 
         this.remindText = remindText;
         this.remindTime = remindTime;
 
-        int remindRectHeight = 20;
-        this.remindRect = new Rectangle(Interface.reminderBackground.x, Interface.reminderBackground.y + remindPos * remindRectHeight, Interface.reminderBackground.width, remindRectHeight);
+        this.remindRect = new Rectangle(Interface.reminderBackground.x, remindRectY, Interface.reminderBackground.width, remindRectHeight);
         this.popupRect = new Rectangle(remindRect.x + 5, remindRect.y + remindRect.height + 5, remindRect.width - 10, 200);
         this.intersectRect = new Rectangle(0, 0, 0, 0);
 

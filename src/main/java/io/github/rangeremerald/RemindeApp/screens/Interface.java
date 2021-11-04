@@ -142,8 +142,8 @@ public class Interface extends JPanel implements ActionListener, MouseListener, 
         if (reminders.size() > 0) {
             int remindDir = 0;
             int botMostReminder = reminders.size() - 1;
-            if (e.getWheelRotation() > 0 && reminders.get(botMostReminder).remindRect.y +  reminders.get(botMostReminder).remindRect.height >= reminderBackground.y + reminderBackground.height) remindDir = -5; // Checks if the bottom most reminder is below the background
-            else if (e.getWheelRotation() < 0 && reminders.get(0).remindRect.y <= reminderBackground.y) remindDir = 5; // Checks if the top most reminder is above the top of the background
+            if (e.getWheelRotation() > 0 && reminders.get(botMostReminder).remindRect.y +  reminders.get(botMostReminder).remindRect.height > reminderBackground.y + reminderBackground.height) remindDir = -10; // Checks if the bottom most reminder is below the background
+            else if (e.getWheelRotation() < 0 && reminders.get(0).remindRect.y < reminderBackground.y) remindDir = 10; // Checks if the top most reminder is above the top of the background
 
             if (remindDir != 0) for (Reminds reminds : reminders) reminds.moveRemind(remindDir);
         }
