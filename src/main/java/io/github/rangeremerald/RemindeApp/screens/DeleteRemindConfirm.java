@@ -11,7 +11,7 @@ import java.awt.event.ActionListener;
 public class DeleteRemindConfirm extends JFrame {
 
     public void deleteRemindConfirm(Reminds reminds, Runnable repaint) {
-        add(new ConfimationPanel(reminds, repaint));
+        add(new ConfirmationPanel(reminds, repaint));
 
         setSize(350, 100);
         setTitle("Delete Remind Confirmation");
@@ -22,7 +22,7 @@ public class DeleteRemindConfirm extends JFrame {
         RemindeApp.remindeApp.setEnabled(false);
     }
 
-    public static class ConfimationPanel extends JPanel implements ActionListener {
+    public static class ConfirmationPanel extends JPanel implements ActionListener {
 
         private JTextArea confirmationText;
         private JButton cancelButton, confirmButton;
@@ -30,7 +30,7 @@ public class DeleteRemindConfirm extends JFrame {
         private final Reminds reminds;
         private final Runnable repaint;
 
-        public ConfimationPanel(Reminds reminds, Runnable repaint) {
+        public ConfirmationPanel(Reminds reminds, Runnable repaint) {
             this.reminds = reminds;
             this.repaint = repaint;
 
@@ -58,9 +58,9 @@ public class DeleteRemindConfirm extends JFrame {
                 Interface.mouseOverRemind = null;
                 Interface.reminders.remove(reminds);
 
-                for (int i = 0; i < Interface.reminders.size(); ++i) Interface.reminders.get(i).reposition(i);
+                for (int i = 0; i < Interface.reminders.size(); ++i) Interface.reminders.get(i).reposition(i); // Repositions each reminder so there will not be a gap when a reminder is deleted
 
-                repaint.run();
+                repaint.run(); // Repaints window so the action will appear
             }
 
             RemindeApp.remindeApp.setEnabled(true);
