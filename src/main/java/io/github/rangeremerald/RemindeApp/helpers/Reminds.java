@@ -1,5 +1,6 @@
 package io.github.rangeremerald.RemindeApp.helpers;
 
+import io.github.rangeremerald.RemindeApp.remindHelpers.DeleteRemind;
 import io.github.rangeremerald.RemindeApp.screens.Interface;
 
 import java.awt.*;
@@ -13,6 +14,7 @@ public class Reminds {
     public long remindTime; // When the user wants the reminder to go
     public Rectangle remindRect, popupRect, intersectRect; // Gives the bounding box for the three rectangles
     public boolean isVisible; // Tells the program whether to draw the reminder or popup
+    public DeleteRemind deleteRemind;
 
     public Reminds(String remindText, long remindTime) {
         int remindPos = Interface.reminders.size();
@@ -34,6 +36,9 @@ public class Reminds {
 
         // Checks if the reminder is within the overflow
         this.isVisible = this.remindRect.intersects(Interface.reminderBackground);
+
+        // Adds the button that allows you to delete the remind
+        this.deleteRemind = new DeleteRemind(this.popupRect, this);
     }
 
     public void drawRemind(Graphics g) {
@@ -63,18 +68,38 @@ public class Reminds {
 
         g.setFont(popupTextFont);
         WordWrap.drawWordWrap(g, remindText, popupRect.x + 5, popupRect.y + popupHeaderFont.getSize() + popupTextFont.getSize(), popupRect.width);
+
+        // Draws the delete remind button
+        deleteRemind.drawButton(g);
     }
 
     public void moveRemind(int amount) {
         intersectRect.y += amount;
         remindRect.y += amount;
         popupRect.y += amount;
+        deleteRemind.button.y += amount;
 
         isVisible = remindRect.intersects(Interface.reminderBackground);
     }
 
-    public void remindAction() {
+    public void reposition(int remindPos) {
+        int remindRectHeight = 20;
+        this.remindRect = new Rectangle(Interface.reminderBackground.x, Interface.reminderBackground.y + remindPos * remindRectHeight, Interface.reminderBackground.width, remindRectHeight);
+        this.popupRect = new Rectangle(remindRect.x + 5, remindRect.y + remindRect.height + 5, remindRect.width - 10, 200);
+        this.intersectRect = new Rectangle(0, 0, 0, 0);
 
+
+        // Creates the rectangle that allows the popup to remain while the mouse hovors over it
+        this.intersectRect.x = this.popupRect.x;
+        this.intersectRect.y = this.remindRect.y + this.remindRect.height;
+        this.intersectRect.width = this.popupRect.width;
+        this.intersectRect.height = (this.popupRect.y + this.popupRect.height) - this.intersectRect.y;
+
+        // Checks if the reminder is within the overflow
+        this.isVisible = this.remindRect.intersects(Interface.reminderBackground);
+
+        // Adds the button that allows you to delete the remind
+        this.deleteRemind = new DeleteRemind(this.popupRect, this);
     }
 
 }

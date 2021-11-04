@@ -16,7 +16,7 @@ public class Interface extends JPanel implements ActionListener, MouseListener, 
     public final static ArrayList<Reminds> reminders = new ArrayList<>(); // Stores all the reminders
     public final static HashMap<String, Buttons> buttons = new HashMap<>(); // Stores all the buttons on the main interface
 
-    private Reminds mouseOverRemind = null; // Stores which reminder the mouse is over
+    public static Reminds mouseOverRemind = null; // Stores which reminder the mouse is over
 
     // Stores the reminders background so they can be accessed elsewhere for ease of use
     public final static Rectangle reminderBackground = new Rectangle(RemindeApp.remindWidth / 2 - 300 / 2, 80, 300, 300);
@@ -95,7 +95,7 @@ public class Interface extends JPanel implements ActionListener, MouseListener, 
                 isMouseHovered = true;
             } // Checks if the cursor is over a button
 
-            for (Reminds remind : reminders) if (mouse.intersects(remind.remindRect) && remind.isVisible) {
+            for (Reminds remind : reminders) if (mouse.intersects(remind.remindRect) && remind.isVisible && (mouseOverRemind == null || !mouseOverRemind.intersectRect.intersects(mouse))) {
                 setCursor(new Cursor(Cursor.HAND_CURSOR));
                 isMouseHovered = true;
                 overRemind = true;
@@ -103,7 +103,12 @@ public class Interface extends JPanel implements ActionListener, MouseListener, 
                 mouseOverRemind = remind;
             } // Checks if the cursor is over a reminder
 
-            if (!overRemind && (mouseOverRemind != null && !mouseOverRemind.intersectRect.intersects(mouse))) mouseOverRemind = null; // Resets if no reminder is hovered over (or if the reminder popup is not hovered over)
+            if ((mouseOverRemind != null) && mouseOverRemind.intersectRect.intersects(mouse)) {
+                if (mouse.intersects(mouseOverRemind.deleteRemind.button) && mouse.intersects(mouseOverRemind.deleteRemind.button)) { // Checks if the mouse is over the delete button in the remind popup
+                    isMouseHovered = true;
+                    setCursor(new Cursor(Cursor.HAND_CURSOR));
+                }
+            } else if (!overRemind) mouseOverRemind = null; // Resets if no reminder is hovered over (or if the reminder popup is not hovered over)
 
             if (!isMouseHovered) setCursor(new Cursor(Cursor.DEFAULT_CURSOR)); // Sets cursor to default cursor if the cursor is not over an object
 
@@ -125,7 +130,7 @@ public class Interface extends JPanel implements ActionListener, MouseListener, 
 
             for (Buttons button : buttons.values()) if (mouse.intersects(button.button)) button.buttonAction(); // Does the custom action when button is pressed
 
-            for (Reminds reminds : reminders) if (mouse.intersects(reminds.remindRect)) reminds.remindAction();
+            if (mouseOverRemind != null && mouse.intersects(mouseOverRemind.deleteRemind.button)) mouseOverRemind.deleteRemind.buttonAction(this::repaint); // Checks if mouse intersects with the delete button when pressed, if is, then delete the reminder
         } catch (IllegalComponentStateException exception) { // Catches and prints exception so the app does not crash
             System.out.println(exception);
         }
