@@ -1,8 +1,9 @@
 package io.github.rangeremerald.RemindeApp.remindHelpers;
 
+import io.github.rangeremerald.RemindeApp.RemindeApp;
 import io.github.rangeremerald.RemindeApp.helpers.Buttons;
 import io.github.rangeremerald.RemindeApp.helpers.Reminds;
-import io.github.rangeremerald.RemindeApp.screens.Interface;
+import io.github.rangeremerald.RemindeApp.screens.DeleteRemindConfirm;
 
 import java.awt.*;
 
@@ -19,12 +20,8 @@ public class DeleteRemind extends Buttons {
     }
 
     public void buttonAction(Runnable repaint) {
-        Interface.mouseOverRemind = null;
-        Interface.reminders.remove(reminds);
-
-        for (int i = 0; i < Interface.reminders.size(); ++i) Interface.reminders.get(i).reposition(i);
-
-        repaint.run();
+        RemindeApp.deleteRemindConfirm = new DeleteRemindConfirm();
+        RemindeApp.deleteRemindConfirm.deleteRemindConfirm(reminds, repaint);
     }
 
     // Unused function

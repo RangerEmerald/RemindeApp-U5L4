@@ -1,6 +1,7 @@
 package io.github.rangeremerald.RemindeApp;
 
 import io.github.rangeremerald.RemindeApp.screens.AddRemind;
+import io.github.rangeremerald.RemindeApp.screens.DeleteRemindConfirm;
 import io.github.rangeremerald.RemindeApp.screens.Interface;
 
 import javax.swing.*;
@@ -12,6 +13,7 @@ public class RemindeApp extends JFrame {
     public static RemindeApp remindeApp = null;
     public static Interface remindeInterface = new Interface();
     public static AddRemind addRemind = null;
+    public static DeleteRemindConfirm deleteRemindConfirm = null;
 
     // Storing the width and height of the app so they can be easier accessed
     public final static int remindWidth = 500;
