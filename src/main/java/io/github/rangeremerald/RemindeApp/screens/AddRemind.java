@@ -24,9 +24,12 @@ public class AddRemind extends JFrame {
         setLocationRelativeTo(RemindeApp.remindeApp);
         setResizable(false);
         setVisible(true);
+
+        RemindeApp.remindeApp.setEnabled(false);
     }
 
     public static class RemindPanel extends JPanel implements ActionListener, KeyListener {
+
         public JTextField addReminderText;
         public JTextArea noText;
         public JLabel addReminderLabel;
@@ -52,7 +55,7 @@ public class AddRemind extends JFrame {
             // Initializes the text that tells users that they don't have anything in the text field
             noText = new JTextArea("No text in reminder");
             noText.setForeground(Color.red);
-            noText.setBackground(new Color(238, 238, 238)); // Sets the background of the text area to be the same as the panel so it looks seemless
+            noText.setBackground(RemindeApp.addRemind.getBackground()); // Sets the background of the text area to be the same as the panel so it looks seemless
             noText.setVisible(false);
             noText.setEditable(false);
         }
@@ -67,7 +70,9 @@ public class AddRemind extends JFrame {
         }
 
         // Closes and disposes of the addRemind frame
-        public static void exitAddRemind(Runnable waitCursor, Runnable defaultCursor) {
+        private void exitAddRemind(Runnable waitCursor, Runnable defaultCursor) {
+            RemindeApp.remindeApp.setEnabled(true);
+
             waitCursor.run();
             RemindeApp.addRemind.dispose();
             RemindeApp.addRemind = null;
