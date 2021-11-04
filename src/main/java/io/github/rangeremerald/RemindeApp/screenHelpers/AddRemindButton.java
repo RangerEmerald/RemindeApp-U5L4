@@ -16,8 +16,10 @@ public class AddRemindButton extends Buttons {
 
     @Override
     public void buttonAction() {
-        RemindeApp.addRemind = new AddRemind();
-        RemindeApp.addRemind.addRemind();
-        System.out.println("working");
+        if (RemindeApp.addRemind == null || !RemindeApp.addRemind.isVisible()) {
+            RemindeApp.addRemind = new AddRemind();
+            RemindeApp.addRemind.addRemind();
+        }
+        RemindeApp.addRemind.toFront();
     }
 }
