@@ -9,16 +9,19 @@ public class Reminds {
     public static Font remindFont = new Font("san-serif", Font.PLAIN, 10);
     public static Font popupHeaderFont = new Font("san-serif", Font.PLAIN, 20);
     public static Font popupTextFont = new Font("san-serif", Font.PLAIN, 15);
-    public String remindText;
-    public long remindTime;
-    public Rectangle remindRect, popupRect, intersectRect;
+    public String remindText; // What the user wants to be reminded of
+    public long remindTime; // When the user wants the reminder to go
+    public Rectangle remindRect, popupRect, intersectRect; // Gives the bounding box for the three rectangles
+    public boolean isVisible; // Tells the program whether to draw the reminder or popup
 
-    public Reminds(String remindText, long remindTime, int remindPos) {
+    public Reminds(String remindText, long remindTime) {
+        int remindPos = Interface.reminders.size();
+
         this.remindText = remindText;
         this.remindTime = remindTime;
 
         int remindRectHeight = 20;
-        this.remindRect = new Rectangle(Interface.remindersX, Interface.remindersY + remindPos * remindRectHeight, Interface.remindersWidth, remindRectHeight);
+        this.remindRect = new Rectangle(Interface.reminderBackground.x, Interface.reminderBackground.y + remindPos * remindRectHeight, Interface.reminderBackground.width, remindRectHeight);
         this.popupRect = new Rectangle(remindRect.x + 5, remindRect.y + remindRect.height + 5, remindRect.width - 10, 200);
         this.intersectRect = new Rectangle(0, 0, 0, 0);
 
@@ -28,6 +31,9 @@ public class Reminds {
         this.intersectRect.y = this.remindRect.y + this.remindRect.height;
         this.intersectRect.width = this.popupRect.width;
         this.intersectRect.height = (this.popupRect.y + this.popupRect.height) - this.intersectRect.y;
+
+        // Checks if the reminder is within the overflow
+        this.isVisible = this.remindRect.intersects(Interface.reminderBackground);
     }
 
     public void drawRemind(Graphics g) {
@@ -57,6 +63,14 @@ public class Reminds {
 
         g.setFont(popupTextFont);
         WordWrap.drawWordWrap(g, remindText, popupRect.x + 5, popupRect.y + popupHeaderFont.getSize() + popupTextFont.getSize(), popupRect.width);
+    }
+
+    public void moveRemind(int amount) {
+        intersectRect.y += amount;
+        remindRect.y += amount;
+        popupRect.y += amount;
+
+        isVisible = remindRect.intersects(Interface.reminderBackground);
     }
 
     public void remindAction() {

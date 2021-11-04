@@ -61,7 +61,7 @@ public class AddRemind extends JFrame {
             if (addReminderText.getText().length() == 0) {
                 noText.setVisible(true);
             } else {
-                Interface.reminders.add(new Reminds(addReminderText.getText(), 100, Interface.reminders.size())); // Adds the new reminder to the list of reminders on the homepage
+                Interface.reminders.add(new Reminds(addReminderText.getText(), 100)); // Adds the new reminder to the list of reminders on the homepage
                 exitAddRemind(() -> setCursor(new Cursor(Cursor.WAIT_CURSOR)), () -> setCursor(new Cursor(Cursor.DEFAULT_CURSOR)));
             }
         }
