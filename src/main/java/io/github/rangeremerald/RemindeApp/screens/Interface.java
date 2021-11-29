@@ -24,8 +24,6 @@ public class Interface extends JPanel implements ActionListener, MouseListener, 
     private final Timer timer;
 
     public Interface() {
-        for (int i = 0; i < 21; ++i) reminders.add(new Reminds("lsdfasdf" + i, 10));
-
         addKeyListener(this);
         addMouseListener(this);
         addMouseWheelListener(this);
