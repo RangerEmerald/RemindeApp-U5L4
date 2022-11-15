@@ -27,14 +27,7 @@ public class Reminds {
 
         this.remindRect = new Rectangle(Interface.reminderBackground.x, remindRectY, Interface.reminderBackground.width, remindRectHeight);
         this.popupRect = new Rectangle(remindRect.x + 5, remindRect.y + remindRect.height + 5, remindRect.width - 10, 200);
-        this.intersectRect = new Rectangle(0, 0, 0, 0);
-
-
-        // Creates the rectangle that allows the popup to remain while the mouse hovors over it
-        this.intersectRect.x = this.popupRect.x;
-        this.intersectRect.y = this.remindRect.y + this.remindRect.height;
-        this.intersectRect.width = this.popupRect.width;
-        this.intersectRect.height = (this.popupRect.y + this.popupRect.height) - this.intersectRect.y;
+        this.intersectRect = new Rectangle(this.popupRect.x, this.remindRect.y + this.remindRect.height, this.popupRect.width, (this.popupRect.y + this.popupRect.height) - (this.remindRect.y + this.remindRect.height));
 
         // Checks if the reminder is within the overflow
         this.isVisible = this.remindRect.intersects(Interface.reminderBackground);
@@ -60,6 +53,9 @@ public class Reminds {
     }
 
     public void popupRemind(Graphics g) {
+        int endY = WordWrap.drawWordWrap(g, remindText, popupRect.x + 5, popupRect.y + popupHeaderFont.getSize() + popupTextFont.getSize(), popupRect.width); // Gets the last line of the wrapped text so the popup can be constrained to the length of the text
+        popupRect.height = endY - popupRect.y;
+
         // Draw the popup window over the other reminds, showing all the information
         g.setColor(Color.gray);
         g.fillRoundRect(popupRect.x, popupRect.y, popupRect.width, popupRect.height, 20, 20);
@@ -69,7 +65,7 @@ public class Reminds {
         g.drawString("Remind Message: ", popupRect.x + 5, popupRect.y + popupHeaderFont.getSize());
 
         g.setFont(popupTextFont);
-        WordWrap.drawWordWrap(g, remindText, popupRect.x + 5, popupRect.y + popupHeaderFont.getSize() + popupTextFont.getSize(), popupRect.width);
+        WordWrap.drawWordWrap(g, remindText, popupRect.x + 5, popupRect.y + popupHeaderFont.getSize() + popupTextFont.getSize(), popupRect.width); // Draws the reminder message, but soft-wraps it so it does not go off the popup
 
         // Draws the delete remind button
         deleteRemind.drawButton(g);
